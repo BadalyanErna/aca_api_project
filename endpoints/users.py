@@ -1,5 +1,4 @@
 from base.base_api import BaseApi
-from user_json import create_user_json
 
 endpoint = 'https://fakestoreapi.com/'
 get_users_endpoint = "users"
@@ -7,7 +6,7 @@ get_single_user_endpoint = "users/"
 limits_results_endpoint = "limit/"
 sort_results_endpoint = "sort"
 add_new_user_endpoint = "users"
-update_user_endpoint = "users/id"
+update_user_endpoint = "users/"
 delete_user_endpoint = "users/id"
 
 
@@ -28,7 +27,13 @@ class Users(BaseApi):
         assert response.status_code == expected_status_code, f"Expected status code {expected_status_code}, but got {response.status_code}"
         return response
 
-    def create_user(self, endpoint, json):
-        response = self.post_request(endpoint + add_new_user_endpoint + create_user_json, json)
-        self.check_status_code(response, 200)
+    def create_user(self, json_data, expected_status_code):
+        url = endpoint + add_new_user_endpoint
+        response = self.post_request(url, json_data, headers=None)
+        assert response.status_code == expected_status_code, f"Expected status code {expected_status_code}, but got {response.status_code}"
+        return response
 
+    def edit_user(self, json_data, user_id, expected_status_code):
+        response = self.put_request(endpoint + update_user_endpoint + str(user_id), json_data)
+        assert response.status_code == expected_status_code, f"Expected status code {expected_status_code}, but got {response.status_code}"
+        return response
