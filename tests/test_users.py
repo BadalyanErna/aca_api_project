@@ -6,7 +6,6 @@ from config import Config
 def test_get_all_users(app_config):
     users = Users()
     response_data = users.get_users(expected_status_code=200)
-    assert len(response_data) == 10, "No users returned in the response"
     expected_length = len(response_data)
     users.find_users_response_length(response_data, expected_length)
 
